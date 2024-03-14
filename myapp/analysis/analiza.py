@@ -6,9 +6,9 @@ import librosa
 import json
 
 # Initialize Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'music_project.settings')
 django.setup()
-from music_analysis.models import SongFeature
+from myapp.models import SongFeature
 
 
 def analyze_mp3(file_path):
@@ -71,5 +71,5 @@ def process_and_store_data(base_dir):
 # features
 
 if __name__ == "__main__":
-    base_dir = '/Users/milosz/Desktop/ishkur'  # Update this path to your dataset directory
+    base_dir = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/Funk'  # Update this path to your dataset directory
     process_and_store_data(base_dir)
