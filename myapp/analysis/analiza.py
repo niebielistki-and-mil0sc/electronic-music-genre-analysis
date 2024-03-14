@@ -71,5 +71,5 @@ def process_and_store_data(base_dir):
 # features
 
 if __name__ == "__main__":
-    base_dir = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/Funk'  # Update this path to your dataset directory
+    base_dir = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/ishkur/'  # Update this path to your dataset directory
     process_and_store_data(base_dir)

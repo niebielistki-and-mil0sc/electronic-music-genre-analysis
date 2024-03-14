@@ -1,6 +1,9 @@
 import os
-import json
+import json  # Add this line
 import numpy as np
+from joblib import dump
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from django.apps import apps  # Adjusted import for Django models
@@ -49,13 +52,23 @@ def prepare_dataset_from_db():
 
 
 def main():
-    # Make sure to update 'dataset_path' with the actual path to your dataset if needed
     X_scaled, y = prepare_dataset_from_db()
-
     X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-    print("Feature preparation complete. The dataset is ready for machine learning.")
+    # Initialize and train the SVM model
+    model = SVC(kernel='linear')  # You can experiment with different kernels and parameters
+    model.fit(X_train, y_train)
 
+    # Make predictions on the test set
+    predictions = model.predict(X_test)
+
+    # Evaluate the model
+    print("Accuracy on test set:", accuracy_score(y_test, predictions))
+    print("\nClassification report:\n", classification_report(y_test, predictions))
+
+    # Save the trained model for later use
+    dump(model, 'genre_classifier.joblib')
 
 if __name__ == "__main__":
     main()
+
