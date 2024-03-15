@@ -6,7 +6,7 @@ import librosa
 import json
 
 # Initialize Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')gt
 django.setup()
 from myapp.models import SongFeature
 
