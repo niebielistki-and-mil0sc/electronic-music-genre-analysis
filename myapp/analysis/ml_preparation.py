@@ -1,3 +1,4 @@
+# ml_preparation.py
 import os
 import json
 import numpy as np
@@ -47,15 +48,15 @@ def prepare_dataset_from_db():
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Returning the scaler along with X_scaled and y.
-    return X_scaled, y, scaler
+    # Returning the scaler along with X_scaled and y, and label_encoder.
+    return X_scaled, y, scaler, label_encoder
 
 def main():
-    X_scaled, y, scaler = prepare_dataset_from_db()
+    X_scaled, y, scaler, label_encoder = prepare_dataset_from_db()
     X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
     # Initialize and train the SVM model.
-    model = SVC(kernel='linear')
+    model = SVC(kernel='linear', probability=True)
     model.fit(X_train, y_train)
 
     # Make predictions on the test set.
@@ -65,9 +66,10 @@ def main():
     print("Accuracy on test set:", accuracy_score(y_test, predictions))
     print("\nClassification report:\n", classification_report(y_test, predictions))
 
-    # Save the trained model and scaler for later use.
+    # Save the trained model, scaler, and label encoder for later use.
     dump(model, 'genre_classifier.joblib')
     dump(scaler, 'scaler.joblib')
+    dump(label_encoder, 'label_encoder.joblib')
 
 if __name__ == "__main__":
     main()
