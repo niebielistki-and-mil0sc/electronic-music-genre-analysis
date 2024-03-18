@@ -4,6 +4,7 @@ from django.db import models
 class SongFeature(models.Model):
     file_path = models.CharField(max_length=1024)
     genre = models.CharField(max_length=255)
+    scene = models.CharField(max_length=255, default='Unknown')
     tempo = models.FloatField()
     average_spectral_centroid = models.FloatField()
     average_spectral_rolloff = models.FloatField()

@@ -27,7 +27,8 @@ def download_song(url, folder, filename):
 def handle_row(row, genres, base_folder):
     if row['genre'] in genres:
         song_url = construct_url(row)
-        filename = f"{row['year']} - {row['genre']} - {row['artist']} - {row['title']}.mp3".replace("/", "-")
+        # Added "scene" to the filename
+        filename = f"{row['year']} - {row['genre']} - {row['scene']} - {row['artist']} - {row['title']}.mp3".replace("/", "-")
         genre_folder = os.path.join(base_folder, row["genre"])
         if not os.path.exists(genre_folder):
             os.makedirs(genre_folder)
@@ -35,7 +36,7 @@ def handle_row(row, genres, base_folder):
 
 # Main function to process CSV and download songs using multithreading
 def process_and_download(csv_file_path, genres, max_workers=5):
-    base_folder = '/Users/milosz/Desktop/ishkur'
+    base_folder = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur'
     with open(csv_file_path, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         # Using ThreadPoolExecutor to download songs concurrently
@@ -45,7 +46,7 @@ def process_and_download(csv_file_path, genres, max_workers=5):
                 executor.submit(handle_row, row, genres, base_folder)
 
 # Specify the path to your CSV file and genres to filter and download
-csv_file_path = '/Users/milosz/Desktop/ishkur/ishkur-songs.csv'
+csv_file_path = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/ishkur-songs.csv'
 selected_genres = ['Funk', 'Italo Disco']
 
 # Process the CSV and download songs for selected genres

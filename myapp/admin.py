@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 class SongFeatureAdmin(admin.ModelAdmin):
     # This list_display allows you to choose which fields to display in the admin list view.
-    list_display = ('file_path', 'genre', 'tempo', 'average_spectral_centroid', 'average_spectral_rolloff',
+    list_display = ('file_path', 'genre', 'scene', 'tempo', 'average_spectral_centroid', 'average_spectral_rolloff',
                     'formatted_average_spectral_contrast', 'formatted_mfccs_mean', 'average_chroma_stft',
                     'average_rms_energy')
 
