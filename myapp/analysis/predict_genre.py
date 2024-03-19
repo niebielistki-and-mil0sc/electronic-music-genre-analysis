@@ -1,13 +1,37 @@
 # predict_genre.py
-from joblib import load
+import os
+import django
 import numpy as np
+from joblib import load
+
+# Set up Django environment
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
+
+# Now that Django is configured, you can import your models
+from myapp.models import GenreRelationship
 
 # Adjust the import path as needed.
 from analiza import analyze_mp3
+from genre_utils import find_relevant_genres
 
 MODEL_PATH = 'genre_classifier.joblib'
 SCALER_PATH = 'scaler.joblib'
 LABEL_ENCODER_PATH = 'label_encoder.joblib'
+
+def adjust_probabilities(probabilities, label_encoder, relevant_genres):
+    adjusted_probs = {}
+    for genre, prob in probabilities.items():
+        # Give more weight to historically relevant genres
+        if genre in relevant_genres:
+            adjusted_probs[genre] = prob * 1.5  # Example weight multiplier for relevant genres
+        else:
+            adjusted_probs[genre] = prob * 0.5  # Example weight multiplier for non-relevant genres
+
+    # Normalize the probabilities to sum to 1
+    total_prob = sum(adjusted_probs.values())
+    normalized_probs = {genre: prob / total_prob for genre, prob in adjusted_probs.items()}
+    return normalized_probs
 
 def predict_genre(file_path):
     # Load the model, scaler, and label encoder
@@ -17,6 +41,10 @@ def predict_genre(file_path):
 
     # Analyze the MP3 to get its features
     feature_dict = analyze_mp3(file_path)
+
+    # Extract the year from the filename
+    filename = os.path.basename(file_path)
+    year = int(filename.split(' - ')[0])
 
     # Ensure this matches the order and selection of features used in your ml_preparation.py
     features = np.array([
@@ -42,5 +70,5 @@ def predict_genre(file_path):
         print(f"{genre}: {probability * 100:.2f}%")
 
 if __name__ == "__main__":
-    new_song_path = '/Users/milosz/Desktop/ishkur/Funk/1981 - Funk - Rick James - Give It To Me Baby.mp3'  # Change to the path of the song you want to analyze
+    new_song_path = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/Funk/1972 - Funk - Urban - Ohio Players - Funky Worm.mp3'  # Change to the path of the song you want to analyze
     predict_genre(new_song_path)

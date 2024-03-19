@@ -8,7 +8,8 @@ import json
 # Initialize Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
-from myapp.models import SongFeature
+from myapp.models import SongFeature, GenreRelationship
+from genre_utils import find_relevant_genres
 
 
 def analyze_mp3(file_path):
@@ -50,18 +51,19 @@ def process_and_store_data(base_dir):
                 if filename.endswith('.mp3'):
                     file_path = os.path.join(genre_dir, filename)
                     try:
-                        # Extracting scene from the filename
-                        parts = filename.split(' - ')
-                        if len(parts) >= 4:
-                            scene = parts[2]  # Assuming 'Year - Genre - Scene - Artist - Title.mp3' structure
-                        else:
-                            scene = "Unknown"
+                        # Extracting year from the filename
+                        parts = filename.replace('.mp3', '').split(' - ')
+                        year = int(parts[0])
+                        scene = parts[2] if len(parts) >= 4 else "Unknown"
+
+                        # Find relevant genres based on the year
+                        relevant_genres = find_relevant_genres(year)
 
                         features = analyze_mp3(file_path)
                         SongFeature.objects.create(
                             file_path=features['file_path'],
                             genre=genre,
-                            scene=scene,  # Include scene when creating the instance
+                            scene=scene,
                             tempo=features['tempo'],
                             average_spectral_centroid=features['average_spectral_centroid'],
                             average_spectral_rolloff=features['average_spectral_rolloff'],

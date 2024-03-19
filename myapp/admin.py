@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SongFeature
+from .models import SongFeature, GenreRelationship
 from django.utils.html import format_html
 
 
@@ -43,3 +43,10 @@ class SongFeatureAdmin(admin.ModelAdmin):
 
 # Register your models here, linking them with the custom admin classes.
 admin.site.register(SongFeature, SongFeatureAdmin)
+
+# Include GenreRelationship in your admin
+class GenreRelationshipAdmin(admin.ModelAdmin):
+    list_display = ('source', 'target', 'start_year', 'end_year')
+
+admin.site.register(GenreRelationship, GenreRelationshipAdmin)
+
