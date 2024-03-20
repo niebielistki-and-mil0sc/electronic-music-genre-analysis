@@ -1,6 +1,9 @@
+# admin.py
+
 from django.contrib import admin
-from .models import SongFeature, GenreRelationship
+from .models import SongFeature, GenreRelationship, GenreInfo
 from django.utils.html import format_html
+import json
 
 
 class SongFeatureAdmin(admin.ModelAdmin):
@@ -50,3 +53,36 @@ class GenreRelationshipAdmin(admin.ModelAdmin):
 
 admin.site.register(GenreRelationship, GenreRelationshipAdmin)
 
+
+class GenreInfoAdmin(admin.ModelAdmin):
+    def parent_genres_list(self, obj):
+        # Fetch all parent genres and return their names joined by commas
+        parents = obj.parent_genres.all()
+        return ", ".join([parent.genre for parent in parents])
+
+    parent_genres_list.short_description = 'Parent Genres'
+
+    list_display = ['genre', 'scene', 'parent_genres_list', 'formatted_aka', 'child_genres_list']
+    search_fields = ['genre', 'scene']
+    list_filter = ['scene']
+
+    def formatted_aka(self, obj):
+        try:
+            # Attempt to load the JSON data
+            aka_list = json.loads(obj.aka)
+            return ", ".join(aka_list)
+        except json.JSONDecodeError:
+            # Return a default value or the raw string if JSON decoding fails
+            return obj.aka or "N/A"  # You can replace "N/A" with any placeholder text you prefer
+
+    formatted_aka.short_description = 'AKA (Aliases)'
+
+    def child_genres_list(self, obj):
+        # Fetch all child genres and return their names joined by commas
+        children = obj.derived_genres.all()
+        return ", ".join([child.genre for child in children])
+
+    child_genres_list.short_description = 'Derived Genres (Children)'
+
+# Register GenreInfo with the custom admin class
+admin.site.register(GenreInfo, GenreInfoAdmin)
