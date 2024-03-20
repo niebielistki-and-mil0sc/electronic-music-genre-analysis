@@ -1,4 +1,4 @@
-#genre_info.py
+# genre_info.py
 import csv
 import django
 import os
@@ -8,7 +8,7 @@ import json
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from myapp.models import GenreInfo, GenreRelationship
+from myapp.models import GenreInfo
 
 # Clear existing relationships
 for genre_info in GenreInfo.objects.all():
@@ -33,27 +33,36 @@ def update_genre_relationships_and_duration(csv_file_path):
         reader = csv.DictReader(file)
         for row in reader:
             try:
-                # Get or create the child genre
-                child_genre, _ = GenreInfo.objects.get_or_create(slug=row['target'], defaults={'genre': row['target']})
+                child_genre, created = GenreInfo.objects.get_or_create(
+                    slug=row['target'],
+                    defaults={'genre': row['target']}
+                )
 
-                # Update duration based on the dataset
-                child_genre.duration_start = int(row['start'])
-                child_genre.duration_end = int(row['end'])
-                child_genre.save()  # Save the child genre to ensure it exists for ManyToMany relations
+                if row['source'] == row['target']:
+                    # The row is indicating the active duration of the genre
+                    child_genre.active_start_year = int(row['start'])
+                    child_genre.active_end_year = int(row['end'])
+                else:
+                    # The row is indicating formation data
+                    # This assumes the genre was formed within the start and end years specified
+                    if child_genre.formation_start_year is None or int(row['start']) < child_genre.formation_start_year:
+                        child_genre.formation_start_year = int(row['start'])
+                    if child_genre.formation_end_year is None or int(row['end']) > child_genre.formation_end_year:
+                        child_genre.formation_end_year = int(row['end'])
 
-                # Find and add parent genres, avoiding adding itself as a parent
-                parent_genre_slugs = [slug.strip() for slug in
-                                      row['source'].split(',')]  # Splitting and stripping to avoid whitespace issues
-                for slug in parent_genre_slugs:
-                    if slug != row['target']:  # Prevent a genre from being its own parent
-                        parent_genre, _ = GenreInfo.objects.get_or_create(slug=slug, defaults={'genre': slug})
-                        child_genre.parent_genres.add(parent_genre)
+                    # Handling parent genres
+                    parent_genre_slugs = [slug.strip() for slug in row['source'].split(',')]
+                    for slug in parent_genre_slugs:
+                        if slug != row['target']:  # Avoiding self-reference
+                            parent_genre, _ = GenreInfo.objects.get_or_create(slug=slug, defaults={'genre': slug})
+                            child_genre.parent_genres.add(parent_genre)
 
-
+                child_genre.save()
             except GenreInfo.DoesNotExist:
                 print(f"Genre not found for slug: {row['source']} or {row['target']}")
 
 
+
 if __name__ == "__main__":
     load_genres_from_csv('/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/v3_genres.csv')
-    update_genre_relationships_and_duration('/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/ishkur-guide-dataset.csv')
+    update_genre_relationships_and_duration('/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/iskur-dataset.csv')

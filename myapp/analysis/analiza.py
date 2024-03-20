@@ -8,7 +8,7 @@ import json
 # Initialize Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
-from myapp.models import SongFeature, GenreRelationship
+from myapp.models import SongFeature
 from genre_utils import find_relevant_genres
 
 

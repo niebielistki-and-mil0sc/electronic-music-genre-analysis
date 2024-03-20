@@ -19,11 +19,9 @@ class SongFeature(models.Model):
     def __str__(self):
         return self.file_path
 
-class GenreRelationship(models.Model):
-    source = models.CharField(max_length=255)  # Parent genre/subgenre
-    target = models.CharField(max_length=255)  # Child genre/subgenre that evolved from source
-    start_year = models.IntegerField()         # Year when the relationship started
-    end_year = models.IntegerField()           # Year when the relationship ended (or current year if it's ongoing)
+    class Meta:
+        verbose_name = "Song Feature"
+        verbose_name_plural = "Song Features"
 
 class GenreInfo(models.Model):
     slug = models.CharField(max_length=255, unique=True, help_text="The genre's slug, a URL-friendly version of its name.")
@@ -34,6 +32,10 @@ class GenreInfo(models.Model):
     parent_genres = models.ManyToManyField('self', symmetrical=False, related_name='derived_genres', blank=True, help_text="The parent genre from which this genre arose.")
     duration_start = models.IntegerField(blank=True, null=True, help_text="The year when the genre's distinct period started.")
     duration_end = models.IntegerField(blank=True, null=True, help_text="The year when the genre's distinct period ended or the current year if it's ongoing.")
+    formation_start_year = models.IntegerField(null=True, blank=True, help_text="The year when the genre began forming.")
+    formation_end_year = models.IntegerField(null=True, blank=True, help_text="The year when the genre's formation was essentially complete.")
+    active_start_year = models.IntegerField(null=True, blank=True, help_text="The year when the genre became distinctively active.")
+    active_end_year = models.IntegerField(null=True, blank=True, help_text="The year when the genre's initial active period ended or the current year if it's ongoing.")
 
     def get_child_genres(self):
         return self.derived_genres.all()

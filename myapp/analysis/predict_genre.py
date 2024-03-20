@@ -8,12 +8,9 @@ from joblib import load
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-# Now that Django is configured, you can import your models
-from myapp.models import GenreRelationship
-
-# Adjust the import path as needed.
-from analiza import analyze_mp3
+from myapp.models import GenreInfo
 from genre_utils import find_relevant_genres
+from analiza import analyze_mp3
 
 MODEL_PATH = 'genre_classifier.joblib'
 SCALER_PATH = 'scaler.joblib'
@@ -45,6 +42,7 @@ def predict_genre(file_path):
     # Extract the year from the filename
     filename = os.path.basename(file_path)
     year = int(filename.split(' - ')[0])
+    relevant_genres = find_relevant_genres(year)
 
     # Ensure this matches the order and selection of features used in your ml_preparation.py
     features = np.array([
@@ -64,9 +62,12 @@ def predict_genre(file_path):
     probabilities = model.predict_proba(features_scaled)[0]
     genre_probabilities = {label_encoder.classes_[i]: prob for i, prob in enumerate(probabilities)}
 
-    # Print the probabilities
-    print("Predicted genre probabilities:")
-    for genre, probability in sorted(genre_probabilities.items(), key=lambda x: x[1], reverse=True):
+    # Adjust the probabilities based on genre relevance
+    adjusted_probs = adjust_probabilities(genre_probabilities, label_encoder, relevant_genres)
+
+    # Print the adjusted probabilities
+    print("Adjusted predicted genre probabilities:")
+    for genre, probability in sorted(adjusted_probs.items(), key=lambda x: x[1], reverse=True):
         print(f"{genre}: {probability * 100:.2f}%")
 
 if __name__ == "__main__":
