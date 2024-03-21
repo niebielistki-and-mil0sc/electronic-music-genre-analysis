@@ -64,6 +64,7 @@ def process_and_store_data(base_dir):
                             file_path=features['file_path'],
                             genre=genre,
                             scene=scene,
+                            year=year,
                             tempo=features['tempo'],
                             average_spectral_centroid=features['average_spectral_centroid'],
                             average_spectral_rolloff=features['average_spectral_rolloff'],
