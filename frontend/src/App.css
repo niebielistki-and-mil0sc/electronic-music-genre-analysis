@@ -1,0 +1,31 @@
+/* App.css */
+
+/* Apply a font throughout the app */
+body, html {
+  height: 100%; /* Ensure the full height of the page is used */
+  margin: 0; /* Remove default margin */
+  font-family: 'Arial', sans-serif;
+  background-color: #151414; /* Consistent background color */
+  color: #fff; /* White text for better readability */
+}
+
+/* Style the full application */
+.App {
+  text-align: center;
+  min-height: 100%; /* Make sure the app fills the viewport */
+  padding: 20px;
+  background-color: #151414; /* Set the background color to match the design */
+}
+
+/* Remove the App-header if it's not being used */
+.App-header {
+  display: none;
+}
+
+/* Global link styles */
+a {
+  color: inherit; /* This makes sure that links are the same color as the regular text */
+  text-decoration: none; /* This removes the underline from links */
+}
+
+/* Add any other global styles you need */

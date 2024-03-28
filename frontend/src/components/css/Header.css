@@ -1,0 +1,19 @@
+/* Header.css */
+
+.header h1 {
+  font-size: 4rem; /* Increase the font size for the header */
+  margin-bottom: 0.5rem; /* Add some margin to the bottom of the title */
+  color: #FFFFFF; /* Your text color */
+}
+
+.header p {
+  font-size: 1.25rem; /* Set a smaller font size for the subtitle */
+  color: #dcdcdc; /* You may want a slightly different shade for the subtitle for contrast */
+}
+
+/* You can remove or adjust the .header styles if they are not needed */
+.header {
+  text-align: center;
+  padding: 20px 0; /* Vertical padding */
+  background-color: #151414; /* Adjust background color */
+}
