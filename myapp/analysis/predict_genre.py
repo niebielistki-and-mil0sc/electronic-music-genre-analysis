@@ -1,74 +1,77 @@
-# predict_genre.py
 import os
 import django
+import torch
 import numpy as np
 from joblib import load
-
-# Set up Django environment
+import json
+from torch.nn.functional import softmax
+from myapp.analysis.nn_models import CNNModel
+from myapp.analysis.analiza import analyze_mp3# Setup Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from genre_utils import find_relevant_genres
-from analiza import analyze_mp3
+# Import analyze_mp3 from your 'analiza' module
+ # Ensure this function is defined correctly
 
-MODEL_PATH = 'genre_classifier.joblib'
-SCALER_PATH = 'scaler.joblib'
-LABEL_ENCODER_PATH = 'label_encoder.joblib'
+# Define paths for the model, scaler, label encoder, and model config
+BASE_MODEL_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/models/trained_model.pth'
+BASE_SCALER_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/scalers/scaler.joblib'
+LABEL_ENCODER_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/label_encoders/label_encoder.joblib'
+MODEL_CONFIG_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/model_config.json'
 
-def adjust_probabilities(probabilities, label_encoder, relevant_genres):
-    adjusted_probs = {}
-    for genre, prob in probabilities.items():
-        # Give more weight to historically relevant genres
-        if genre in relevant_genres:
-            adjusted_probs[genre] = prob * 1.5  # Example weight multiplier for relevant genres
-        else:
-            adjusted_probs[genre] = prob * 0.5  # Example weight multiplier for non-relevant genres
-
-    # Normalize the probabilities to sum to 1
-    total_prob = sum(adjusted_probs.values())
-    normalized_probs = {genre: prob / total_prob for genre, prob in adjusted_probs.items()}
-    return normalized_probs
+def load_model_config(config_path=MODEL_CONFIG_PATH):
+    with open(config_path, 'r') as config_file:
+        config = json.load(config_file)
+    return config['input_length'], config['num_classes']
 
 def predict_genre(file_path):
-    # Load the model, scaler, and label encoder
-    model = load(MODEL_PATH)
-    scaler = load(SCALER_PATH)
-    label_encoder = load(LABEL_ENCODER_PATH)
+    try:
+        input_length, num_classes = load_model_config()
 
-    # Analyze the MP3 to get its features
-    feature_dict = analyze_mp3(file_path)
+        # Load the scaler and label encoder
+        scaler = load(BASE_SCALER_PATH)
+        label_encoder = load(LABEL_ENCODER_PATH)
 
-    # Extract the year from the filename
-    filename = os.path.basename(file_path)
-    year = int(filename.split(' - ')[0])
-    relevant_genres = find_relevant_genres(year)
+        # Initialize the model with the loaded configurations
+        model = CNNModel(input_channels=1, input_length=input_length, num_classes=num_classes)
+        model.load_state_dict(torch.load(BASE_MODEL_PATH))
+        model.eval()
 
-    # Ensure this matches the order and selection of features used in your ml_preparation.py
-    features = np.array([
-        feature_dict['tempo'],
-        feature_dict['average_spectral_centroid'],
-        feature_dict['average_spectral_rolloff'],
-        np.mean(feature_dict['average_spectral_contrast']),
-        *feature_dict['mfccs_mean'],
-        np.mean(feature_dict['average_chroma_stft']),
-        np.mean(feature_dict['average_rms_energy']),
-    ]).reshape(1, -1)  # Reshape for a single sample
+        # Extract features using the analyze_mp3 function
+        feature_dict = analyze_mp3(file_path)
+        if feature_dict is None:
+            raise ValueError("Failed to extract features from the audio file.")
 
-    # Scale the features
-    features_scaled = scaler.transform(features)
+        # Prepare features for prediction
+        features = np.array([
+            feature_dict['tempo'],
+            feature_dict['average_spectral_centroid'],
+            feature_dict['average_spectral_rolloff'],
+            np.mean(feature_dict['average_spectral_contrast']),
+            *feature_dict['mfccs_mean'],
+            feature_dict['average_chroma_stft'],
+            feature_dict['average_rms_energy'],
+        ]).reshape(1, -1)
 
-    # Predict the genre
-    probabilities = model.predict_proba(features_scaled)[0]
-    genre_probabilities = {label_encoder.classes_[i]: prob for i, prob in enumerate(probabilities)}
+        features_scaled = scaler.transform(features)
+        features_scaled = torch.tensor(features_scaled, dtype=torch.float32).unsqueeze(1)  # Add channel dimension for CNN input
 
-    # Adjust the probabilities based on genre relevance
-    adjusted_probs = adjust_probabilities(genre_probabilities, label_encoder, relevant_genres)
+        # Make the prediction
+        with torch.no_grad():
+            logits = model(features_scaled)
+            probabilities = softmax(logits, dim=1)
+            genre_probabilities = probabilities.numpy()[0]  # Convert to numpy array and get the first (and only) item
 
-    # Print the adjusted probabilities
-    print("Adjusted predicted genre probabilities:")
-    for genre, probability in sorted(adjusted_probs.items(), key=lambda x: x[1], reverse=True):
-        print(f"{genre}: {probability * 100:.2f}%")
+        # Display the probabilities
+        genres = label_encoder.classes_
+        for genre, probability in zip(genres, genre_probabilities):
+            return {genre: f"{probability * 100:.2f}%" for genre, probability in zip(genres, genre_probabilities)}
+
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    new_song_path = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/Funk/1972 - Funk - Urban - Ohio Players - Funky Worm.mp3'  # Change to the path of the song you want to analyze
+    new_song_path = '/Users/milosz/Downloads/London Boys - Requiem (Official Video).mp3'
     predict_genre(new_song_path)
