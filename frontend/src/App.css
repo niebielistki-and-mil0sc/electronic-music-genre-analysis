@@ -28,4 +28,15 @@ a {
   text-decoration: none; /* This removes the underline from links */
 }
 
+/* Add this new style for error messages */
+.error-message {
+  color: #c03333; /* Choose a color that signifies an error, often red */
+  background-color: #151414; /* A light background color to make the error stand out */
+  padding: 10px;
+  margin-bottom: 20px; /* Spacing below the error message */
+  border-radius: 5px; /* Optional: rounded corners for aesthetics */
+  font-weight: bold; /* Optional: to make it more prominent */
+}
+
+
 /* Add any other global styles you need */
