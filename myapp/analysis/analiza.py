@@ -9,8 +9,7 @@ import json
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 from myapp.models import SongFeature
-from genre_utils import find_relevant_genres
-
+from .genre_utils import find_relevant_genres
 
 def analyze_mp3(file_path):
     """
