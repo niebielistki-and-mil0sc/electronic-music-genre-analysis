@@ -14,8 +14,7 @@ class SongFeature(models.Model):
     mfccs_mean = models.TextField()  # Likewise, a list converted to string
     average_chroma_stft = models.FloatField()
     average_rms_energy = models.FloatField()
-    # New field to store relevant genres as a JSON string
-    relevant_genres = models.TextField(default=DjangoJSONEncoder().encode([]))
+    vggish_embeddings = models.TextField(default=DjangoJSONEncoder().encode([]))  # For VGGish features
 
     def __str__(self):
         return self.file_path

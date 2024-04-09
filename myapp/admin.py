@@ -7,19 +7,14 @@ import json
 
 
 class SongFeatureAdmin(admin.ModelAdmin):
-    # This list_display allows you to choose which fields to display in the admin list view.
-    list_display = ('file_path', 'genre', 'scene', 'year', 'tempo', 'average_spectral_centroid', 'average_spectral_rolloff',
-                    'formatted_average_spectral_contrast', 'formatted_mfccs_mean', 'average_chroma_stft',
-                    'average_rms_energy')
+    list_display = ('file_path', 'genre', 'scene', 'year', 'tempo',
+                    'average_spectral_centroid', 'average_spectral_rolloff',
+                    'formatted_average_spectral_contrast', 'formatted_mfccs_mean',
+                    'average_chroma_stft', 'average_rms_energy', 'formatted_vggish_embeddings')
 
-    # Adding a search functionality to search through the file paths and genres.
     search_fields = ['file_path', 'genre']
-
-    # Enable filtering by genre and tempo, which could be useful for quickly finding songs of a certain type.
     list_filter = ('genre', 'tempo')
 
-    # Custom methods to format the serialized list fields for better readability in the list view.
-    # These methods return the first few elements of the list for a quick preview.
     def formatted_average_spectral_contrast(self, obj):
         return self._format_list_field(obj.average_spectral_contrast)
 
@@ -30,23 +25,20 @@ class SongFeatureAdmin(admin.ModelAdmin):
 
     formatted_mfccs_mean.short_description = 'MFCCs Mean (Preview)'
 
-    # Utility method to format list fields.
+    def formatted_vggish_embeddings(self, obj):
+        # Adjust formatting as needed, depending on how VGGish embeddings are stored
+        return self._format_list_field(obj.vggish_embeddings)
+
+    formatted_vggish_embeddings.short_description = 'VGGish Embeddings (Preview)'
+
     def _format_list_field(self, list_field):
         if list_field:
-            list_data = list_field.strip('[]').split(',')[
-                        :5]  # Assuming it's stored as a string representation of a list.
-            formatted_list = ', '.join(list_data) + '...'
+            list_data = json.loads(list_field)[:5]  # Convert string to list and take first 5 elements
+            formatted_list = ', '.join([str(item) for item in list_data]) + '...'
             return format_html('<span title="{}">{}</span>', list_field, formatted_list)
         return ''
 
-    # This ensures the custom formatting methods are safe from auto-escaping
-    formatted_average_spectral_contrast.allow_tags = True
-    formatted_mfccs_mean.allow_tags = True
-
-
-# Register your models here, linking them with the custom admin classes.
 admin.site.register(SongFeature, SongFeatureAdmin)
-
 class GenreInfoAdmin(admin.ModelAdmin):
     def parent_genres_list(self, obj):
         # Fetch all parent genres and return their names joined by commas

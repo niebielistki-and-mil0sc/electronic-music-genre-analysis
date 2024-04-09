@@ -37,7 +37,7 @@ def handle_row(row, genres, base_folder):
 
 # Main function to process CSV and download songs using multithreading
 def process_and_download(csv_file_path, genres, max_workers=5):
-    base_folder = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur'
+    base_folder = '/Users/milosz/Desktop/ishkur'
     with open(csv_file_path, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         # Using ThreadPoolExecutor to download songs concurrently
@@ -47,8 +47,8 @@ def process_and_download(csv_file_path, genres, max_workers=5):
                 executor.submit(handle_row, row, genres, base_folder)
 
 # Specify the path to your CSV file and genres to filter and download
-csv_file_path = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/ishkur/ishkur-songs.csv'
-selected_genres = ['Funk', 'Italo Disco']
+csv_file_path = '/Users/milosz/Desktop/ishkur/ishkur-songs.csv'
+selected_genres = ['Nu Jazz', 'Break Core']
 
 # Process the CSV and download songs for selected genres
 process_and_download(csv_file_path, selected_genres)

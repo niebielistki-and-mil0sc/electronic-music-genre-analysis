@@ -69,10 +69,21 @@ def load_features_and_labels():
 
     features = []
     labels = []
+    desired_length = 13000  # Max length for VGGish embeddings
+
     for song in all_songs:
         # Convert JSON strings back to lists for processing, if necessary
         spectral_contrast = np.mean(np.array(json.loads(song.average_spectral_contrast), dtype=float))
         mfccs_mean = np.array(json.loads(song.mfccs_mean), dtype=float)
+        vggish_embeddings = np.array(json.loads(song.vggish_embeddings), dtype=float)
+
+        # Adjust VGGish embeddings to have a uniform length of 100
+        if len(vggish_embeddings) > desired_length:
+            vggish_embeddings = vggish_embeddings[:desired_length]  # Truncate
+        elif len(vggish_embeddings) < desired_length:
+            # Pad with zeros
+            vggish_embeddings = np.pad(vggish_embeddings, (0, desired_length - len(vggish_embeddings)), mode='constant',
+                                       constant_values=0)
 
         song_features = [
             song.tempo,
@@ -82,13 +93,14 @@ def load_features_and_labels():
             *mfccs_mean,  # Flatten MFCCs means into the feature vector
             song.average_chroma_stft,
             song.average_rms_energy,
+            *vggish_embeddings  # Now of uniform length
         ]
         features.append(song_features)
         labels.append(song.genre)
 
     if not features or not labels:
         print("No data found, returning None.")
-        return None, None  # Or alternatively, return empty lists [], []
+        return None, None
 
     return np.array(features, dtype=float), np.array(labels)
 
@@ -126,9 +138,13 @@ def create_dataloaders(X_train, X_test, y_train, y_test, batch_size=32):
     return train_loader, test_loader
 
 
-def train_model(model, criterion, optimizer, train_loader, test_loader, epochs=10):
+def train_model(model, criterion, optimizer, train_loader, test_loader, epochs=10, patience=3):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
+
+    # Early stopping initialization
+    best_val_loss = float('inf')
+    patience_counter = 0
 
     for epoch in range(epochs):
         model.train()  # Set model to training mode
@@ -182,6 +198,17 @@ def train_model(model, criterion, optimizer, train_loader, test_loader, epochs=1
         val_epoch_acc = val_correct_predictions / val_total_predictions
 
         print(f'Validation - Loss: {val_epoch_loss:.4f}, Accuracy: {val_epoch_acc:.4f}')
+
+        # Check for early stopping
+        if val_epoch_loss < best_val_loss:
+            best_val_loss = val_epoch_loss
+            patience_counter = 0
+        else:
+            patience_counter += 1
+
+        if patience_counter >= patience:
+            print("Early stopping triggered.")
+            break
 
 
 if __name__ == "__main__":
