@@ -1,0 +1,6 @@
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+myapp/analysis/models/trained_model.pth
+# Ignore MP3 files
+*.mp3
