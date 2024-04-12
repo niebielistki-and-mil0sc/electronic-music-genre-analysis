@@ -109,6 +109,16 @@ def process_and_store_data(base_dir):
 
 
 if __name__ == "__main__":
-    base_dir = '/Users/milosz/Desktop/ishkur/Italo Disco'  # Adjust to your actual directory path
-    process_and_store_data(base_dir)
+    base_dir = '/Users/milosz/Desktop/ishkur/'  # Set to your top-level directory
 
+    # Iterate through each item in the base directory
+    for item in os.listdir(base_dir):
+        # Construct the full path of the item
+        item_path = os.path.join(base_dir, item)
+
+        # Check if the item is a directory (and not a file like 'ishkur-songs.csv')
+        if os.path.isdir(item_path):
+            print(f"Processing directory: {item_path}")
+            process_and_store_data(item_path)
+        else:
+            print(f"Skipping non-directory item: {item_path}")

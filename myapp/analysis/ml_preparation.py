@@ -17,7 +17,6 @@ from myapp.analysis.nn_models import CNNModel
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-# Replace 'your_app' and 'SongFeature' with your actual app and model name
 SongFeature = apps.get_model('myapp', 'SongFeature')
 
 
@@ -138,7 +137,7 @@ def create_dataloaders(X_train, X_test, y_train, y_test, batch_size=32):
     return train_loader, test_loader
 
 
-def train_model(model, criterion, optimizer, train_loader, test_loader, epochs=10, patience=3):
+def train_model(model, criterion, optimizer, train_loader, test_loader, epochs=50, patience=7):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
 

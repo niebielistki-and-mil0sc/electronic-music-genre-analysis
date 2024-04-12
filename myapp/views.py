@@ -8,9 +8,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from myapp.serializers import FileUploadSerializer
 from myapp.analysis.predict_genre import predict_genre
+from tempfile import NamedTemporaryFile
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
+
 
 
 class GenrePredictionAPI(APIView):
@@ -18,10 +20,10 @@ class GenrePredictionAPI(APIView):
         serializer = FileUploadSerializer(data=request.data)
         if serializer.is_valid():
             file = serializer.validated_data['file']
-            file_path = default_storage.save(file.name, file)
-            full_file_path = os.path.join(settings.MEDIA_ROOT, file_path)
-            prediction = predict_genre(full_file_path)
+            with NamedTemporaryFile(delete=True) as tmp:
+                for chunk in file.chunks():
+                    tmp.write(chunk)
+                tmp.flush()
+                prediction = predict_genre(tmp.name)
             return Response(prediction, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    def get(self, request, *args, **kwargs):
-        return Response({"message": "GET request received, but this endpoint expects a POST request with a file."})
