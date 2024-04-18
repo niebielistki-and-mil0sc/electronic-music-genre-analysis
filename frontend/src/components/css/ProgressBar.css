@@ -1,15 +1,28 @@
 /* ProgressBar.css */
 
 .progress-bar-container {
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+  color: #fff; /* Assuming a dark theme */
   width: 100%;
-  background-color: #e0e0e0; /* Light grey background */
+  max-width: 600px; /* Set a max-width if desired */
+  margin: 40px auto 20px; /* Center the container with auto margins and add space above and below */
+  background-color: #051C2C; /* Dark background */
   border-radius: 8px; /* Rounded corners */
-  overflow: hidden; /* Keeps inner bar within the border radius */
+  display: flex; /* Use flex to center children */
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
 }
 
 .progress-bar {
-  width: 0%; /* Start width, will be dynamically adjusted */
-  height: 20px; /* Fixed height of the bar */
-  background-color: #4caf50; /* Adjust to your progress color */
-  transition: width 1s ease-in-out; /* Smooth width transition */
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  width: 100%; /* Full width */
+  font-size: 1.2em; /* Increase font size */
 }

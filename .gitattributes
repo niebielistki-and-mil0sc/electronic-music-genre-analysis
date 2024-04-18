@@ -1,1 +1,0 @@
-myapp/analysis/models/trained_model.pth filter=lfs diff=lfs merge=lfs -text

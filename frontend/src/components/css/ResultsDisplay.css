@@ -1,12 +1,68 @@
 /* ResultsDisplay.css */
 
-.results-display {
-  padding: 20px;
+
+.results-display h1 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  padding: 40px 0;
   text-align: center;
   color: #fff; /* Assuming a dark theme */
+  position: relative; /* Position relative to allow absolute positioning of pseudo-elements */
+  display: block; /* Change the display to inline-block for width manipulation */
+  margin: 0 auto 20px; /* Additional space below the heading */
+}
+
+/* Add a pseudo-element for the underline */
+.results-display h1::after {
+  content: '';
+  display: block; /* Make the pseudo-element behave like a block for width and height */
+  height: 2px; /* Height of the separator line */
+  background-color: #ffffff; /* Color of the separator line */
+  width: calc(100% + 40px); /* Extend the width beyond the parent container */
+  position: absolute; /* Position absolutely to place it relative to the h1 */
+  left: 50%; /* Position at 50% of the h1 element */
+  transform: translateX(-50%) scaleX(1.1); /* Adjust the scale to extend the line */
+  bottom: 30px; /* Position below the h1 text */
+}
+
+.results-display h3 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Or the weight you prefer */
+  font-style: normal;
+  color: #fff; /* Assuming a dark theme */
+  /* Add other styling as needed */
+}
+
+
+.genre-bar {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  height: 25px;
+  margin-bottom: 10px;
+  color: white;
+  display: flex;
+  align-items: center; /* Aligns the text vertically */
+  padding-left: 10px; /* For the text inside the bar */
+}
+
+.genre-label {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  white-space: nowrap;
 }
 
 .genre-result {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   margin: 20px 0;
   background: #333; /* Dark background for each result */
   border-radius: 8px; /* Rounded corners for the genre result blocks */
@@ -15,23 +71,38 @@
 }
 
 .genre-label {
-  font-weight: bold;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
 .genre-description {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   font-size: 1rem;
   margin-bottom: 5px;
 }
 
 .genre-details {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   font-size: 0.9rem;
   color: #aaa; /* Lighter text for less important details */
 }
 
 /* If you have specific styles for images */
 .genre-image {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   width: 100%; /* Responsive image width */
   margin-bottom: 10px;
   border-radius: 4px; /* Slight rounding on image corners */
@@ -52,3 +123,40 @@
   width: 0; /* Default width, will be dynamically set */
   transition: width 0.5s ease; /* Smooth transition for when the width changes */
 }
+
+/* New styles for additiotnal details: description, image, artists */
+.genre-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* Assuming the image and artist list are narrower than the description */
+  gap: 20px;
+  align-items: start;
+}
+
+.genre-bar-container {
+  grid-column: 1 / -1; /* Make the genre bar span all columns */
+}
+
+.genre-image-container img {
+  width: 100%; /* Ensure the image takes the full width of the column */
+  border-radius: 4px; /* Rounded corners for aesthetics */
+}
+
+.genre-description-container {
+  /* Adjust padding or margin as necessary to match the Figma draft */
+}
+
+.genre-artists-container {
+  /* Styles for the artist list to ensure proper spacing and aesthetics */
+}
+
+.artist-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.artist-name {
+  margin-bottom: 0.5rem;
+  /* Add any additional styles for artist name */
+}
+
+/* ... */

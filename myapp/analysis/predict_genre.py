@@ -13,10 +13,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
 # Define paths for the model, scaler, label encoder, and model config
-BASE_MODEL_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/models/trained_model.pth'
-BASE_SCALER_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/scalers/scaler.joblib'
-LABEL_ENCODER_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/label_encoders/label_encoder.joblib'
-MODEL_CONFIG_PATH = '/Users/milosz/python/pyCharm/music-project/myapp/analysis/model_config.json'
+BASE_MODEL_PATH = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/models/trained_model.pth'
+BASE_SCALER_PATH = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/scalers/scaler.joblib'
+LABEL_ENCODER_PATH = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/label_encoders/label_encoder.joblib'
+MODEL_CONFIG_PATH = '/Users/wiktoria/PycharmProjects/music-project/myapp/analysis/model_config.json'
 
 
 def load_model_config(config_path=MODEL_CONFIG_PATH):

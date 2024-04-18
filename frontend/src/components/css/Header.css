@@ -1,6 +1,11 @@
 /* Header.css */
 
 .header h1 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  text-align: center;
   font-size: 4rem; /* Increase the font size for the header */
   margin-bottom: 0.5rem; /* Add some margin to the bottom of the title */
   color: #FFFFFF; /* Your text color */
@@ -13,7 +18,11 @@
 
 /* You can remove or adjust the .header styles if they are not needed */
 .header {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   text-align: center;
   padding: 20px 0; /* Vertical padding */
-  background-color: #151414; /* Adjust background color */
+  background-color: #051C2C; /* Adjust background color */
 }

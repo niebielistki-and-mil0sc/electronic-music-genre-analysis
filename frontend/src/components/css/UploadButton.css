@@ -1,13 +1,18 @@
+
 /* UploadButton.css */
 
 .upload-button {
-  background-color: #B284BE; /* The single color you want */
-  color: #fff;
-  border: none;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
   padding: 30px 60px; /* Increase padding to make the button larger */
+  text-align: center;
+  color: #fff; /* Assuming a dark theme */
+  background-color: #8d155e; /* The single color you want */
+  border: none;
   margin: 10px;
   font-size: 1.6rem; /* Slightly larger text size */
-  font-weight: bold; /* Make the text bold */
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease; /* Smooth transition for all properties */
@@ -17,7 +22,7 @@
 
 .upload-button:hover,
 .upload-button:focus {
-  background-color: #B284BE; /* Maintain the same color on hover/focus */
+  background-color: rgba(233, 60, 172, 0.63); /* Maintain the same color on hover/focus */
   box-shadow: 0 0 10px #B284BE; /* Add a subtle glow effect */
   outline: none; /* Removes the outline that appears on focus */
 }

@@ -1,5 +1,5 @@
 // src/App.js
-
+import './index.css'
 import React, { useState } from 'react';
 import Header from './components/Header';
 import UploadButton from './components/UploadButton';
@@ -14,20 +14,23 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false); // State to track if analysis is in progress
   const [results, setResults] = useState(null); // State for the analysis results
   const [uploadError, setUploadError] = useState('');
+  const [fileName, setFileName] = useState('');
 
   // Function to handle file selection
   const handleFileSelect = async (selectedFile) => {
     setFile(selectedFile);
+    setFileName(selectedFile.name); // Add this line to save the file name
+    setResults(null); // Reset results when new file is selected
     setUploadError(''); // Reset any previous error messages
     setIsAnalyzing(true); // Indicate that the upload and analysis process has begun
 
     try {
       const analysisResults = await uploadFileToServer(selectedFile);
+      console.log("Analysis Results:", analysisResults); // Log the results to ensure they're received
       handleResults(analysisResults);
     } catch (error) {
-      setUploadError(error.message); // Display any error messages during the upload process
-    } finally {
-      setIsAnalyzing(false); // Reset the analyzing state regardless of success or error
+      console.error('Error uploading file:', error);
+      setUploadError('Error: ' + error.message); // Update: Ensure this line properly updates the state
     }
   };
 
@@ -46,6 +49,7 @@ function App() {
   // The value you want to provide to all consuming components
   const contextValue = {
     file,
+    fileName,
     isAnalyzing,
     results,
     uploadError,

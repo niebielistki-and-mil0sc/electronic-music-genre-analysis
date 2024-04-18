@@ -10,17 +10,19 @@ const uploadFileToServer = async (file) => {
     const response = await fetch(API_URL, {
       method: 'POST',
       body: formData,
-      // You may need to include headers for CSRF if you have CSRF protection enabled in Django
     });
+
+    console.log(response); // Log the raw response
 
     if (!response.ok) {
       throw new Error('File upload failed. Please try again.');
     }
-
-    return await response.json(); // This should be the analysis result from your Django backend
+    const responseData = await response.json();
+    console.log("Response Data:", responseData); // Log the response data
+    return responseData;
   } catch (error) {
     console.error('Upload service encountered an error:', error);
-    throw error;
+    throw error; // Just throw the error
   }
 };
 
