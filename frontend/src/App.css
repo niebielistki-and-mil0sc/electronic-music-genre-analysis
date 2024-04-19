@@ -4,8 +4,13 @@
 body, html {
   height: 100%; /* Ensure the full height of the page is used */
   margin: 0; /* Remove default margin */
-  font-family: 'Arial', sans-serif;
-  background-color: #151414; /* Consistent background color */
+  padding: 20px;
+  font-family: "Inter", sans-serif; /* This inherits the font-family from index.css */
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+  background-color: #051C2C; /* Consistent background color */
   color: #fff; /* White text for better readability */
 }
 
@@ -14,7 +19,7 @@ body, html {
   text-align: center;
   min-height: 100%; /* Make sure the app fills the viewport */
   padding: 20px;
-  background-color: #151414; /* Set the background color to match the design */
+  background-color: #051C2C; /* Set the background color to match the design */
 }
 
 /* Remove the App-header if it's not being used */
@@ -30,12 +35,13 @@ a {
 
 /* Add this new style for error messages */
 .error-message {
+  text-align: center;
   color: #c03333; /* Choose a color that signifies an error, often red */
-  background-color: #151414; /* A light background color to make the error stand out */
+  background-color: #051C2C; /* A light background color to make the error stand out */
   padding: 10px;
   margin-bottom: 20px; /* Spacing below the error message */
   border-radius: 5px; /* Optional: rounded corners for aesthetics */
-  font-weight: bold; /* Optional: to make it more prominent */
+  font-weight: 700; /* Optional: to make it more prominent */
 }
 
 
