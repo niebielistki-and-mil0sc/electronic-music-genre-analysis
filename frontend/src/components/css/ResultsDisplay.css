@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10+Charted&display=swap');
+
+/* ResultsDisplay.css */
+
+@keyframes fadeInUp {
+  from {
+    transform: translate3d(0, 20px, 0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.results-display {
+  text-align: left;
+}
+
+.results-display h1 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  padding: 40px 0;
+  text-align: left;
+  color: #fff; /* Assuming a dark theme */
+  position: relative; /* Position relative to allow absolute positioning of pseudo-elements */
+  display: block; /* Change the display to inline-block for width manipulation */
+  margin: 0 auto 20px; /* Additional space below the heading */
+}
+
+
+.results-display h2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  display: inline-block;
+  font-optical-sizing: auto;
+  font-size: 1.1rem;
+  margin-bottom: 1rem; /* Increase this value as needed */
+  animation: fadeInUp 1s ease forwards;
+  text-align: left; /* Align text to the left */
+  padding: 10px 0;
+  text-transform: uppercase; /* Set the text to uppercase including numbers */
+  font-variant: normal; /* Set font-variant to normal if using uppercase */
+  margin-left: 0; /* Align to the left side of the container */
+}
+
+.results-display h3 {
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Or the weight you prefer */
+  font-style: normal;
+  color: #fff; /* Assuming a dark theme */
+  /* Add other styling as needed */
+}
+
+.genre-bar {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  height: 25px;
+  margin-bottom: 10px;
+  color: white;
+  display: flex;
+  align-items: center; /* Aligns the text vertically */
+  padding-left: 10px; /* For the text inside the bar */
+}
+
+.genre-result {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  margin: 20px 0;
+  background: #333; /* Dark background for each result */
+  border-radius: 8px; /* Rounded corners for the genre result blocks */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.genre-details {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.9rem;
+  color: #aaa; /* Lighter text for less important details */
+}
+
+/* If you have specific styles for images */
+.genre-image {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  width: 100%; /* Responsive image width */
+  margin-bottom: 10px;
+  border-radius: 4px; /* Slight rounding on image corners */
+}
+
+/* Assume a horizontal bar for the percentage display */
+.percentage-bar-container {
+  width: 100%;
+  background: #444; /* Slightly lighter than result background */
+  border-radius: 8px;
+  overflow: hidden; /* To ensure child elements conform to container's border radius */
+  margin-bottom: 15px; /* Space before the next section */
+}
+
+.percentage-bar {
+  height: 24px; /* Fixed height for percentage bar */
+  background: linear-gradient(90deg, #6c63ff 0%, #5a52e7 100%); /* Gradient background */
+  width: 0; /* Default width, will be dynamically set */
+  transition: width 0.5s ease; /* Smooth transition for when the width changes */
+}
+
+/* New styles for additiotnal details: description, image, artists */
+.genre-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* Assuming the image and artist list are narrower than the description */
+  gap: 20px;
+  align-items: start;
+}
+
+.genre-bar-container {
+  grid-column: 1 / -1; /* Make the genre bar span all columns */
+}
+
+.genre-section {
+  margin-bottom: 80px; /* Adjust as needed for gap */
+}
+
+.genre-section .genre-label {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  white-space: nowrap;
+  grid-column: 1 / -1;
+  font-size: 26px
+}
+
+.genre-image-container img {
+  max-width: 100%; /* or any other width as needed */
+  height: auto; /* maintain aspect ratio */
+  border-radius: 4px; /* optional for rounded corners */
+  /* add more styles if needed */
+}
+
+
+.genre-description-container .genre-first-sentence {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  text-align: left;
+  font-style: italic;
+  display: block; /* Ensures it's on its own line */
+}
+
+.genre-description-container .genre-description {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+
+.genre-description-container .genre-title {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  margin-bottom: 1px;
+  margin-top: auto;
+  text-align: left;
+  font-size: 45px;
+}
+
+.genre-description-container .genre-read-more {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #bc4a9b; /* Sets the text color to purple */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.genre-description-container .genre-read-more:hover {
+    background-color: #0c7475;
+}
+
+.genre-artists-container h4 {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 1.2rem; /* Adjust size as needed */
+  color: #fff; /* Assuming a dark theme */
+  margin-bottom: 0.5rem;
+}
+
+.genre-artists-container .artist-name a {
+  color: #fff; /* Set your preferred text color */
+  transition: color 0.3s ease; /* Smooth color transition for hover effect */
+}
+
+.genre-artists-container .artist-name a:hover {
+  color: #bc4a9b; /* Set your preferred hover color */
+}
+
+.genre-artists-container .artist-list {
+  list-style-type: none; /* This removes the bullets */
+  padding-left: 0; /* This removes padding if it's unnecessary */
+  margin: 0; /* Adjust margins as needed */
+}
+
+.genre-title {
+  font-size: 2rem; /* Adjust size as needed */
+  font-weight: bold;
+}
+
+
+/* ... */

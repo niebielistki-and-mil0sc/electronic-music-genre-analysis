@@ -1,0 +1,48 @@
+/* App.css */
+
+/* Apply a font throughout the app */
+body, html {
+  height: 100%; /* Ensure the full height of the page is used */
+  margin: 0; /* Remove default margin */
+  padding: 20px;
+  font-family: "Inter", sans-serif; /* This inherits the font-family from index.css */
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+  background-color: #051C2C; /* Consistent background color */
+  color: #fff; /* White text for better readability */
+}
+
+/* Style the full application */
+.App {
+  text-align: center;
+  min-height: 100%; /* Make sure the app fills the viewport */
+  padding: 20px;
+  background-color: #051C2C; /* Set the background color to match the design */
+}
+
+/* Remove the App-header if it's not being used */
+.App-header {
+  display: none;
+}
+
+/* Global link styles */
+a {
+  color: inherit; /* This makes sure that links are the same color as the regular text */
+  text-decoration: none; /* This removes the underline from links */
+}
+
+/* Add this new style for error messages */
+.error-message {
+  text-align: center;
+  color: #c03333; /* Choose a color that signifies an error, often red */
+  background-color: #051C2C; /* A light background color to make the error stand out */
+  padding: 10px;
+  margin-bottom: 20px; /* Spacing below the error message */
+  border-radius: 5px; /* Optional: rounded corners for aesthetics */
+  font-weight: 700; /* Optional: to make it more prominent */
+}
+
+
+/* Add any other global styles you need */
