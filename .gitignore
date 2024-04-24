@@ -30,7 +30,7 @@ Thumbs.db
 
 
 # Explicitly exclude your trained models or specific large data files
-# myapp/analysis/models/trained_model.pth
+myapp/analysis/models/trained_model.pth
 
 .env
 *.pem
