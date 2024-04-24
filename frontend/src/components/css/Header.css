@@ -1,19 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
 /* Header.css */
 
 .header h1 {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 800;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 500;
   font-style: normal;
   text-align: center;
   font-size: 4rem; /* Increase the font size for the header */
-  margin-bottom: 0.5rem; /* Add some margin to the bottom of the title */
+  margin-bottom: 1.5rem; /* Add some margin to the bottom of the title */
   color: #FFFFFF; /* Your text color */
 }
 
 .header p {
-  font-size: 1.25rem; /* Set a smaller font size for the subtitle */
-  color: #dcdcdc; /* You may want a slightly different shade for the subtitle for contrast */
+  font-size: 1.10rem; /* Set a smaller font size for the subtitle */
+  color: #dcdcdc;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  text-align: center;
+  padding: 0px 0; /* Vertical padding */
+  line-height: 0.5;
 }
 
 /* You can remove or adjust the .header styles if they are not needed */

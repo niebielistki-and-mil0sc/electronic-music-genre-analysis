@@ -4,7 +4,7 @@
 .upload-button {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 700;
+  font-weight: 800;
   font-style: normal;
   padding: 30px 60px; /* Increase padding to make the button larger */
   text-align: center;
@@ -12,7 +12,7 @@
   background-color: #8d155e; /* The single color you want */
   border: none;
   margin: 10px;
-  font-size: 1.6rem; /* Slightly larger text size */
+  font-size: 1.2rem; /* Slightly larger text size */
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease; /* Smooth transition for all properties */

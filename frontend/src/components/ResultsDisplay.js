@@ -12,9 +12,34 @@ const shuffleArray = (array) => {
   return array;
 };
 
+// Separate the first sentence and the rest of the description
+const splitDescription = (description) => {
+  const firstPeriodIndex = description.indexOf('. ');
+  if (firstPeriodIndex !== -1) {
+    const firstSentence = description.slice(0, firstPeriodIndex + 1);
+    const restOfDescription = description.slice(firstPeriodIndex + 2);
+    return { firstSentence, restOfDescription: truncateDescription(restOfDescription) };
+  }
+  return { firstSentence: description, restOfDescription: '' };
+};
+
+const truncateDescription = (description) => {
+  const maxLength = 1000; // This can be adjusted as needed
+  if (description.length > maxLength) {
+    const truncated = description.slice(0, maxLength);
+    return truncated.slice(0, truncated.lastIndexOf('.')) + '.';
+  }
+  return description;
+};
+
+const createWikiLink = (artistName) => {
+  return `https://en.wikipedia.org/wiki/${artistName.split(' ').join('_')}`;
+};
+
 const ResultsDisplay = () => {
   const { results, fileName } = useContext(AnalysisContext);
   const [detailedResults, setDetailedResults] = useState([]);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
     if (results) {
@@ -24,27 +49,37 @@ const ResultsDisplay = () => {
       const transformGenreKey = (genre) =>
         genre.toLowerCase().replace(/ & /g, ' and ').replace(/\s+/g, '_').replace(/[^\w_]/g, '');
 
-      const parsed = Object.entries(results).map(([genre, percentageString], index) => {
+
+      let parsed = Object.entries(results).map(([genre, percentageString], index) => {
         const percentage = parseFloat(percentageString.replace('%', ''));
         const genreKey = transformGenreKey(genre);
         const genreData = GenreData[genreKey] || {};
+
+        // Use the splitDescription function to split the description
+        const { firstSentence, restOfDescription } = splitDescription(genreData.description || '');
 
         return {
           genre,
           percentage,
           color: shuffledColors[index % shuffledColors.length],
           ...genreData,
+          description: restOfDescription, // restOfDescription now holds the truncated description without the first sentence
+          firstSentence, // Add the first sentence to the object
         };
       }).filter(result => result && result.percentage > 0);
 
+      parsed = parsed.sort((a, b) => b.percentage - a.percentage);
+
       setDetailedResults(parsed);
+      setAnimate(true);
     }
   }, [results]);
 
 
   return (
-    <div className="results-display">
-      {fileName && <h2>{`Analysis Results for ${fileName}`}</h2>}
+    <div className={`results-display ${animate ? 'animate' : ''}`}>
+    {fileName && <h2>{`Analysis results for: ${fileName}`}</h2>}
+
       <div className="results-list">
         {detailedResults.map((result, index) => (
           <div key={index} className="genre-section">
@@ -58,23 +93,36 @@ const ResultsDisplay = () => {
             <div className="genre-content">
               {/* Image container */}
               <div className="genre-image-container">
-                {result.image && <img src={result.image} alt={`${result.genre}`} />}
+                {result.image && <img src={result.image} alt={`${result.genre}`} className="genre-image" />}
               </div>
               {/* Description container */}
               <div className="genre-description-container">
                 <h3 className="genre-title">{result.genre.toUpperCase()}</h3>
-                {result.description && <p className="genre-description">{result.description}</p>}
+
+                {/* Display the first sentence separately */}
+                {result.firstSentence && (
+                    <p className="genre-first-sentence">{result.firstSentence}</p>
+                )}
+
+                {/* Display the rest of the description */}
+                <p className="genre-description">{result.description}</p>
+
                 {result.readMoreLink && (
-                  <a className="genre-read-more" href={result.readMoreLink} target="_blank" rel="noopener noreferrer">
-                    Read more
-                  </a>
+                    <a className="genre-read-more" href={result.readMoreLink} target="_blank" rel="noopener noreferrer">
+                      Read more at music.ishkur.com...
+                    </a>
                 )}
               </div>
               {/* Artist list container */}
               <div className="genre-artists-container">
+                <h4>RELATED ARTISTS:</h4>
                 <ul className="artist-list">
                   {result.artists && result.artists.map((artist, artistIndex) => (
-                    <li key={artistIndex} className="artist-name">{artist}</li>
+                      <li key={artistIndex} className="artist-name">
+                        <a href={createWikiLink(artist)} target="_blank" rel="noopener noreferrer">
+                          {artist}
+                          </a>
+                        </li>
                   ))}
                 </ul>
               </div>

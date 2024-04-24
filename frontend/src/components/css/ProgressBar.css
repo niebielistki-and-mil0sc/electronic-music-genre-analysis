@@ -1,28 +1,54 @@
-/* ProgressBar.css */
+@keyframes popLetter {
+  0%, 100% {
+    transform: scale(1);
+    color: #ffffff; /* White */
+  }
+  20% {
+    transform: scale(1.2);
+    color: #ffffff; /* White */
+  }
+  40% {
+    transform: scale(1);
+    color: #ffffff; /* White */
+  }
+  60% {
+    transform: scale(1.2);
+    color: #ffffff; /* White */
+  }
+  80% {
+    transform: scale(1);
+    color: #ffffff; /* White */
+  }
+}
+
+
+.letter-animation {
+  display: inline-block;
+  animation: popLetter 2s infinite;
+  margin-right: 3px;
+  color: #ffffff; /* Set text color to white */
+  animation-delay: calc(0.2s * var(--i)); /* Staggered animation start */
+}
+
 
 .progress-bar-container {
-  padding: 10px;
   font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: 200;
+  font-size: 16px;
   font-style: normal;
+  padding: 10px;
+  font-optical-sizing: auto;
   text-align: center;
-  color: #fff; /* Assuming a dark theme */
+  color: #fff;
   width: 100%;
-  max-width: 600px; /* Set a max-width if desired */
-  margin: 40px auto 20px; /* Center the container with auto margins and add space above and below */
-  background-color: #051C2C; /* Dark background */
-  border-radius: 8px; /* Rounded corners */
-  display: flex; /* Use flex to center children */
-  justify-content: center; /* Center children horizontally */
-  align-items: center; /* Center children vertically */
+  max-width: 600px;
+  margin: 40px auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 170px;
 }
 
 .progress-bar {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-  width: 100%; /* Full width */
-  font-size: 1.2em; /* Increase font size */
+  font-size: 1.2em;
 }
