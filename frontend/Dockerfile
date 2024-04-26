@@ -1,26 +1,25 @@
-# Use an official Node.js runtime as a parent image
+# Use a base Node image
 FROM node:14-slim
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Argument to specify environment: production or development
+ARG ENV=production
+
+# Copy project files into the Docker image
 COPY . /app
 
-# Install any needed packages specified in package.json
+# Use the argument to decide which .env file to copy
+COPY .env.${ENV} ./.env
+
+# Install dependencies and build the project
 RUN npm install
-
-# Make port 3000 available to the world outside this container
-EXPOSE 3000
-
-# Define environment variables
-ENV NODE_ENV=production
-
-# Build the app
 RUN npm run build
 
-# Install serve to serve the built application
+# Install serve and set the command to serve the app
 RUN npm install -g serve
-
-# Run serve when the container launches
 CMD ["serve", "-s", "build", "-l", "3000"]
+
+# Expose port 3000
+EXPOSE 3000

@@ -1,6 +1,5 @@
-// src/services/uploadService.js
-
-const API_URL = 'http://127.0.0.1:8000/api/predict-genre/';
+// Replace the hardcoded API_URL with the environment variable
+const API_URL = process.env.REACT_APP_BACKEND_URL;
 
 const uploadFileToServer = async (file) => {
   const formData = new FormData();
@@ -12,6 +11,7 @@ const uploadFileToServer = async (file) => {
       body: formData,
     });
 
+    console.log("API URL used:", API_URL); // Log the API URL being used
     console.log(response); // Log the raw response
 
     if (!response.ok) {
