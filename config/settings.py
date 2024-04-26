@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-u5@at_=8^lzzd9$k60g@-06yx%rlpf*(9uiv9tb03d^7b^-2bg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['predict-electronic-genre-backend.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -58,7 +57,7 @@ ROOT_URLCONF = 'config.urls'
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = False  # Set to False to restrict to specified origins
 CORS_ALLOWED_ORIGINS = [
-    'https://predict-electronic-genre.onrender.com',
+    'https://electronic-music-gerne-prediction.onrender.com',
     'http://localhost:3000',
 ]
 
