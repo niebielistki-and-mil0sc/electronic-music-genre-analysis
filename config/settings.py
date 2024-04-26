@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-u5@at_=8^lzzd9$k60g@-06yx%rlpf*(9uiv9tb03d^7b^-2bg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['predict-electronic-genre-backend.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'predict-electronic-genre-backend.onrender.com',
+    'electronic-music-gerne-prediction.onrender.com',  # Add this line
+    'localhost',
+    '127.0.0.1'
+]
 
 # Application definition
 
